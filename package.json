@@ -4,6 +4,12 @@
   "private": true,
   "dependencies": {},
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "mocha tests --recursive --watch"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.0"
   }
 }

@@ -2,14 +2,14 @@ var port = process.env.PORT || 3000,
     http = require('http'),
     fs = require('fs'),
     html = fs.readFileSync('index.html');
-    url = require('url');
+url = require('url');
 
 // here we keep all the messages
 var myLastMessage = [];
 
 var server = http.createServer(function (req, res) {
 
-   // dealing with POST request
+    // dealing with POST request
     if (req.method === 'POST' && url.parse(req.url).pathname === "/chatroom/") {
         var body = '';
 
@@ -28,7 +28,7 @@ var server = http.createServer(function (req, res) {
             // create the message object
             var result = {
                 id: id,
-                message: body, 
+                message: body,
             }
 
             // set the flag for checking if there is another message with the same id
@@ -56,50 +56,61 @@ var server = http.createServer(function (req, res) {
         });  // end of req.on request
     }  else if (req.method === 'POST') {
 
-            res.writeHead(400, 'Bad request', {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-            });
-            res.write(JSON.stringify({Error : "POST request not well formed."}));
-            res.end();
+        res.writeHead(400, 'Bad request', {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+        });
+        res.write(JSON.stringify({Error : "POST request not well formed."}));
+        res.end();
     }   // end of POST request
 
 
     // dealing with GET request
     if (req.method === 'GET' && url.parse(req.url).pathname === "/chatroom/") {
-    
-            // get the id parameter from the url
-            var query = url.parse(req.url).query;
-            var id = query.replace('id=', '');
 
-            var lastMessage = {};
+        // get the id parameter from the url
+        var query = url.parse(req.url).query;
+        var id = query.replace('id=', '');
 
-             myLastMessage.find(function(element, index, array)  {
-                if(element.id === id) {
-                   lastMessage = element;
-                }
-            });
+        var lastMessage = {};
 
-            res.writeHead(200, 'OK', {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
-            });
-            res.write(JSON.stringify(lastMessage));
-            res.end();
+        myLastMessage.find(function(element, index, array)  {
+            if(element.id === id) {
+                lastMessage = element;
+            }
+        });
 
-    
+        res.writeHead(200, 'OK', {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+        });
+        res.write(JSON.stringify(lastMessage));
+        res.end();
+
+
     } else if (req.method === 'GET') {
-       
+
         res.writeHead(200);
         res.write(html);
         res.end();
     }
 });
 
+var multiply = function (x, y) {
+    return x*y;
+}
+
+
+
 // Listen on port 3000, IP defaults to 127.0.0.1
-server.listen(port);
+if(!module.parent){
+    server.listen(port);
+}
+
+module.exports = server;
+module.exports.multiply = multiply;
 
 // Put a friendly message on the terminal
 console.log('Server running at http://127.0.0.1:' + port + '/');

@@ -28,7 +28,7 @@ describe("Multiply should return multiplied numbers",function(){
 			})
 	});
 	it("Get chat room, returns text");
-	it("Post messsage works correctly", function(done){
+	it("Post messsage works correctly", function(done){  //I'm not doing this correctly, TODO! how to we test this API?
 			chai.request(app)
 				.post("/chatroom/?id=1")
 				.send("Hello")
