@@ -36,25 +36,25 @@ Jasmine, another popular testing framework does come with everything built into 
 
 ### Setting up your testing framework:
 1.	Install Mocha globally so that you can run mocha from your command line (you can also add this to your package.json if you want):
-'''
+```
 npm install –g mocha
-'''
+```
 
 2.	Then add the chai package to your project and save it to development dependencies in your package.json file
-'''
+```
 npm install chai –save-dev
-'''
+```
 
 3.	We’ll also include another assertion library for common http tasks:
-'''
+```
 npm install chai-http
-'''
+```
 
 4.	Then create a folder called “tests” in your project’s parent folder, this is where mocha will look for the tests when you run it.
 5.	Finally in the package.json file add the following key, value pair to the “scripts” object:
-'''
+```
 "test": "mocha tests --recursive --watch" – Note the error below!!
-'''
+```
 
 This will allow you to start the testing using the command "npm test"
 ..*The command “mocha” will start tests in a folder called “test”, so we have specified a different folder “tests”,
@@ -79,13 +79,13 @@ Hopefully everything should work, however any errors you can amend whilst the te
 
 7. Now we can write a test, start with a simple test for a function that multiplies two numbers:
 Use describe() to group your test suites and you can nest a much of these as you want, then use it() as the test case, within the callback for it() you have all your tests for that test case.  Use the done() callback if you are using promises to give them enough time to resolve for your tests
-'''
+```
 describe("The main app", function(){
    it("The multiply function should multiply two numbers and return the result", function(done){
       expect(app.multiply(2,3)).to.be.a('number');
    })
 })
-'''
+```
 
 The accepted work flow of test driven development it that you should write the test first, and the test should fail, then you get the test to pass then write another test
 This will fail:
@@ -97,20 +97,20 @@ Chai-Http:
 
 ### ERRORs you may encounter!!
 
-'''
+```
 1) Uncaught error outside test suite:
 Uncaught Error: listen EADRINUSE :: 3000
 ...
-'''
+```
 
 This is because app.listen is being called twice, once by the test, and once in the actual app?  I think…….
 A detailed explanation can be found [here](http://www.marcusoft.net/2015/10/eaddrinuse-when-watching-tests-with-mocha-and-supertest.html)
 
 Solution is to only call app.listen once by checking the module.parent is not present when the app is executed
-'''
+```
 if(!module.parent){
     app.listen(3000);
 }
-'''
+```
 
 TODO! Create more advanced tests, cover mocking, and API tests......
